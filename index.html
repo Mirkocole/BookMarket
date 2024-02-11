@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/b68de36aab.js" crossorigin="anonymous"></script>
+    <title>Book Market</title>
+</head>
+
+<body>
+
+    <!-- Navbar Menu -->
+    <div class="container-fluid p-0 position-fixed z-3">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid row px-3">
+                <a class="navbar-brand col-3" href="#"><img src="assets/logo-BookMarket.png" alt="Logo" id="logo"> Book
+                    Market</a>
+                <button class="navbar-toggler col-auto" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse col-auto col-lg-6 navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <button class="nav-link active" aria-current="page" onclick="chagePage(event)">Home</button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Ebooks</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" onclick="chagePage(event)">Carrello</button>
+                        </li>
+                    </ul>
+                    <div class="col-2 d-lg-none ">
+                        <div class="row">
+                            <i class="col-auto fa-solid fa-cart-shopping"></i>
+                            <i class="col-auto fa-solid fa-user"></i>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 d-none d-lg-flex">
+                    <div class="row d-flex">
+                        <a href="#" class="col text-dark">
+                            <i class="col-auto fa-solid fa-cart-shopping position-relative" id="iconCart">
+                                <span
+                                    class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style="font-size: 9px;" id="notify">
+
+                                </span>
+                            </i>
+                        </a>
+                        <a href="#" class="col text-dark"> <i class="col-auto fa-solid fa-user"></i></a>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="container-fluid" id="homepage">
+
+
+        <!-- Jumbotron -->
+        <div class="container-fluid py-5 d-flex justify-content-center border" id="jumbotron">
+            <div class="col-auto d-flex flex-column align-items-center mt-5">
+                <h1 class="fw-light text-center text-light mt-5">What Book Are You <br>Looking For?</h1>
+                <span class="my-3 text-center text-light">Can't Figure Out What To Read Next? Explore Our Limitless <br>
+                    Choices Of Public Domain Books With Editors.</span>
+                <input type="text" id="inputSearch" placeholder="Cerca i tuoi libri"
+                    class="rounded border border-none py-2 px-3">
+                <a href="#homeResults" class="btn btn-outline-light my-5">Explore Now</a>
+            </div>
+        </div>
+
+
+        <!-- Main Results Home -->
+        <div class="container text-center my-5">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3  row-cols-xl-4 g-0 g-md-2 g-lg-2" id="homeResults">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid d-none p-1 p-lg-5 pt-5 " id="cartPage">
+        <h1 class="mt-5">Carrello</h1>
+        <div class="row p-5 position-relative">
+            <div class="col-8" id="resultsCart">
+                
+            </div>
+            <div class="col-4 shadow-sm rounded position-fixed end-0 me-3 p-5" id="totalCart">
+                <h3>Total</h3>
+                <span>Price: 89,00€</span>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

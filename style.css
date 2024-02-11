@@ -1,0 +1,27 @@
+
+
+body{
+    font-family: 'Montserrat';
+}
+
+#logo{
+    width: 80px;
+}
+
+#jumbotron{
+    background-color: rgba(0, 0, 0, 0.541);
+    background-blend-mode: darken;
+    background-image: url(assets/sfondo-1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.card img{
+    object-fit: cover;
+}
+
+#totalCart{
+    height: 100%;
+}
