@@ -214,6 +214,19 @@ function cartCards(element){
     div.append(titleCard,description,buttonClose);
     item.append(image,div,count);
 
+    // Funzione del click che elimina l'elemento dal carrello
+    buttonClose.addEventListener('click',()=>{
+        cart.splice(cart.indexOf(element), 1);
+        eventCart();
+        resetCart();
+        cartItems();
+    })
+
     return item;
 
 }
+
+function resetCart(){
+    const lista = document.querySelectorAll('#resultsCart li');
+    lista.forEach(el => el.remove())
+} 
