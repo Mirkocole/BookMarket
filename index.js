@@ -4,6 +4,9 @@ const containerHome = document.getElementById('homeResults');
 const iconCart = document.getElementById('iconCart');
 const notify = document.getElementById('notify');
 const inputSearch = document.getElementById('inputSearch');
+const containerTotalCart = document.getElementById('totalCart');
+const bottoneSvuota = document.getElementById('btn-svuota');
+let totalpriceCart = 0;
 let cart = [];
 let itemCart=[];
 
@@ -49,20 +52,27 @@ function createCard(book){
     let titleCard = document.createElement('span');
     let categoryCard = document.createElement('p');
     let priceCard = document.createElement('span');
+    let divButtons = document.createElement('div');
     let buttonCard = document.createElement('button');
+    let buttonHide = document.createElement('button');
+    let buttonDetail = document.createElement('button');
 
 
     // Stilizzazione nodi
     col.classList.add('col');
     subCol.classList=['p-1 p-lg-3'];
     card.classList = ['card position-relative shadow border border-none'];
+    card.id = book.asin;
     imageCard.classList.add('card-img-top');
     cardBody.classList.add('card-body');
     titleCard.classList.add('card-title');
     titleCard.style.fontWeight = 'bold';
     categoryCard.classList.add('card-text');
     priceCard.classList = ['position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger fs-6'];
+    divButtons.classList = ['d-grid gap-2'];
     buttonCard.classList = ['btn btn-primary'];
+    buttonHide.classList = ['btn btn-outline-danger'];
+    buttonDetail.classList = ['btn btn-outline-dark'];
 
     // Inserimento valori
     imageCard.src = img;
@@ -71,6 +81,8 @@ function createCard(book){
     categoryCard.innerText = `Category: ${category}`;
     priceCard.innerText = `${price.toFixed(2)} €`;
     buttonCard.innerText = `Aggiungi al Carrello`;
+    buttonHide.innerText = 'Salta';
+    buttonDetail.innerText = 'Dettagli';
 
     // Controllo se è già presente nel carrello per inserire il bordo rosso
     if (cart) {
@@ -95,8 +107,19 @@ function createCard(book){
         card.classList.add('border','border-danger');
     })
 
+    // Funzione SALTA libro
+    buttonHide.addEventListener('click',()=>{
+        col.classList.add('d-none');
+    })
+
+    // Logica pulsante dettagli
+    buttonDetail.addEventListener('click',()=>{
+        window.location.href='/dettagli.html?id='+book.asin;
+    })
+
     // Combinazione dei Nodi
-    cardBody.append(titleCard,categoryCard,priceCard,buttonCard);
+    divButtons.append(buttonCard,buttonHide,buttonDetail);
+    cardBody.append(titleCard,categoryCard,priceCard,divButtons);
     card.append(imageCard,cardBody);
     subCol.appendChild(card);
     col.appendChild(subCol);
@@ -165,6 +188,9 @@ function chagePage(event){
 
 
 function cartItems(){
+
+    resetCart();
+    resetListCartItems();
     // Recupero il contenitore del carrello
     const resultsCart = document.getElementById('resultsCart');
 
@@ -172,15 +198,26 @@ function cartItems(){
     const lista = document.createElement('ul');
     lista.classList.add('list-group');
 
+    // Creo lista riepilogo carrello
+    let listItems = document.createElement('ul');
+    listItems.classList = ['p-1']
     
     cart.forEach(element =>{
         let ele = cartCards(element);
+        let li = listCartItem(element);
+        listItems.appendChild(li);
         resultsCart.appendChild(ele);
     })
 
-    // resultsCart.appendChild(lista);
+    containerTotalCart.appendChild(listItems);
+
+    let totalPrice = document.querySelector('#title-total');
+    getTotalPriceCart();
+    totalPrice.innerText = 'Total '+totalpriceCart.toFixed(2)+'€';
 
 }
+
+
 
 function cartCards(element){
     // Creao gli elementi
@@ -214,15 +251,47 @@ function cartCards(element){
     div.append(titleCard,description,buttonClose);
     item.append(image,div,count);
 
+
+    // console.log(element);
     // Funzione del click che elimina l'elemento dal carrello
     buttonClose.addEventListener('click',()=>{
         cart.splice(cart.indexOf(element), 1);
+        restyleBookSelected(element);
         eventCart();
         resetCart();
+        resetListCartItems();
         cartItems();
+        getTotalPriceCart();
     })
 
     return item;
+
+}
+
+function listCartItem({title, price, count}){
+
+    
+    // Creo i nodi per la lista degli elementi 
+    let item = document.createElement('li');
+    let name = document.createElement('h6');
+    let prezzo = document.createElement('span');
+    let quantita = document.createElement('span');
+
+    // Stilizzazione nodi
+    item.classList = ['d-flex border p-2 rounded my-3 justify-content-between align-items-center position-relative'];
+    quantita.classList = ['position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger'];
+    prezzo.classList.add('price-span');
+    name.classList = ['me-3']
+
+    // Valorizzo gli elementi
+    name.innerText = title;
+    prezzo.innerText = count == 1 ? price+'€' : (price*count)+'€'; 
+    quantita.innerText = count > 1 ? count : '';
+
+    item.append(name,prezzo,quantita);
+
+    return item;
+
 
 }
 
@@ -230,3 +299,45 @@ function resetCart(){
     const lista = document.querySelectorAll('#resultsCart li');
     lista.forEach(el => el.remove())
 } 
+
+function resetListCartItems(){
+    let listItemsCart = document.querySelectorAll('#totalCart > ul > li');
+    listItemsCart.forEach(el => el.remove());
+}
+
+function restyleBookSelected({asin}){
+    let cardRestyle = document.getElementById(asin);
+    cardRestyle.classList.remove('border-danger');
+}
+
+function getTotalPriceCart(){
+    totalpriceCart = 0;
+    cart.forEach(el =>{
+        console.log(el)
+        totalpriceCart += el.price * el.count;
+        console.log(totalpriceCart)
+    })
+}
+
+// Logica svuota carrello
+bottoneSvuota.addEventListener('click',()=>{
+    svuotaCarrello();
+})
+
+
+function svuotaCarrello(){
+    cart = [];
+    totalpriceCart = 0;
+    resetCart();
+    resetListCartItems();
+
+    let cards = document.querySelectorAll('#homeResults .card');
+    cards.forEach(el => {
+        el.classList.remove('border-danger');
+    })
+
+    let totalPrice = document.querySelector('#title-total');
+    totalPrice.innerText = 'Total '+totalpriceCart.toFixed(2)+'€';
+
+    eventCart();
+}
